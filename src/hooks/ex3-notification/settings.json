@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "comment_macos": "Décommentez la ligne ci-dessous sur macOS",
+            "command": "osascript -e 'display notification \"Claude a terminé sa tâche !\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ]
+  }
+}

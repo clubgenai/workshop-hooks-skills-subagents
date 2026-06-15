@@ -176,21 +176,57 @@ exit 2  # 🚫 BLOQUER l'action</pre>
     <section>
         <h2>🛠 TP 1 — Formatage automatique (5 min)</h2>
         <div class="card card--intro">
-            <p style="color: var(--color-charcoal);">💡 <strong style="color: var(--color-terracotta);">Prérequis :</strong> macOS / Linux natif — Windows avec <strong>Git Bash</strong>. Les scripts <code>.sh</code> s'exécutent dans le même shell.</p>
+            <p style="color: var(--color-charcoal);">💡 <strong style="color: var(--color-terracotta);">Prérequis :</strong> macOS / Linux : <strong>bash</strong> + Python3 + Node. Windows : <strong>PowerShell natif</strong> (onglet Windows) + Node. La commande de votre OS est sélectionnée automatiquement.</p>
         </div>
         <div class="card" style="border-left: 4px solid var(--color-blue);">
             <strong style="color: var(--color-blue);">Créez <code>.claude/settings.json</code> à la racine du projet</strong>
-            <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-md); line-height: 1.7; font-size: 0.78em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
+            <div class="os-tabs" data-os-tabs style="margin-top: var(--margin-md);">
+                <div class="os-tabs__nav" role="tablist">
+                    <button class="os-tabs__tab" data-os="mac"     type="button">macOS</button>
+                    <button class="os-tabs__tab" data-os="linux"   type="button">Linux</button>
+                    <button class="os-tabs__tab" data-os="windows" type="button">Windows</button>
+                </div>
+                <div class="os-tabs__panel" data-os="mac">
+                    <pre class="code-block" style="font-size: 0.7em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
   "hooks": {
     "PostToolUse": [{
       "matcher": "Edit|Write",
       "hooks": [{
         "type": "command",
-        "command": "FILE=$(echo \"$CLAUDE_TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get('file_path') or d.get('path',''))\"); case \"$FILE\" in *.js|*.ts|*.jsx|*.tsx) npx --yes prettier --write \"$FILE\" 2>/dev/null;; esac"
+        "command": "FILE=$(python3 -c \"import sys,json; print(json.load(sys.stdin).get('tool_input',{}).get('file_path',''))\"); case \"$FILE\" in *.js|*.ts|*.jsx|*.tsx) npx --yes prettier --write \"$FILE\" 2>/dev/null;; esac"
       }]
     }]
   }
 }</pre>
+                </div>
+                <div class="os-tabs__panel" data-os="linux">
+                    <pre class="code-block" style="font-size: 0.7em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "FILE=$(python3 -c \"import sys,json; print(json.load(sys.stdin).get('tool_input',{}).get('file_path',''))\"); case \"$FILE\" in *.js|*.ts|*.jsx|*.tsx) npx --yes prettier --write \"$FILE\" 2>/dev/null;; esac"
+      }]
+    }]
+  }
+}</pre>
+                </div>
+                <div class="os-tabs__panel" data-os="windows">
+                    <pre class="code-block" style="font-size: 0.7em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "shell": "powershell",
+        "command": "$f=([Console]::In.ReadToEnd()|ConvertFrom-Json).tool_input.file_path; if($f -match '\\.(jsx?|tsx?)$'){npx --yes prettier --write $f 2>$null}"
+      }]
+    }]
+  }
+}</pre>
+                </div>
+            </div>
             <p style="color: var(--color-charcoal); margin-top: var(--margin-md); font-size: var(--font-size-secondary);">Test : demandez à Claude de créer un fichier <code>test.js</code> mal formaté — il doit être nettoyé automatiquement.</p>
         </div>
     </section>
@@ -199,12 +235,20 @@ exit 2  # 🚫 BLOQUER l'action</pre>
     <section>
         <h2>🛠 TP 2 — Hook de sécurité (7 min)</h2>
         <div class="card card--intro">
-            <p style="color: var(--color-charcoal);">💡 <strong style="color: var(--color-terracotta);">Prérequis :</strong> macOS / Linux natif — Windows avec <strong>Git Bash</strong>. Python3 requis (installé par défaut sur macOS/Linux).</p>
+            <p style="color: var(--color-charcoal);">💡 <strong style="color: var(--color-terracotta);">Prérequis :</strong> macOS / Linux : <strong>bash</strong> + Python3. Windows : <strong>PowerShell natif</strong> (onglet Windows). Onglet de votre OS pré-sélectionné.</p>
         </div>
         <div style="display: flex; gap: var(--gap-md); align-items: start;">
             <div class="card" style="flex: 1; min-width: 0; border-left: 4px solid var(--color-blue);">
-                <strong style="color: var(--color-blue);">~/.claude/hooks/security-check.sh</strong>
-                <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-md); line-height: 1.6; font-size: 0.72em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
+                <strong style="color: var(--color-blue);">1. Le script de hook</strong>
+                <div class="os-tabs" data-os-tabs style="margin-top: var(--margin-sm);">
+                    <div class="os-tabs__nav" role="tablist">
+                        <button class="os-tabs__tab" data-os="mac"     type="button">macOS</button>
+                        <button class="os-tabs__tab" data-os="linux"   type="button">Linux</button>
+                        <button class="os-tabs__tab" data-os="windows" type="button">Windows</button>
+                    </div>
+                    <div class="os-tabs__panel" data-os="mac">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/security-check.sh</code></p>
+                        <pre class="code-block" style="font-size: 0.64em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
 INPUT=$(cat)
 CMD=$(echo "$INPUT" | python3 -c \
   "import sys,json; d=json.load(sys.stdin); \
@@ -217,11 +261,52 @@ for p in "rm -rf /" "DROP TABLE" "chmod 777"; do
   fi
 done
 exit 0</pre>
-                <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-sm); font-size: 0.72em;">chmod +x ~/.claude/hooks/security-check.sh</pre>
+                        <pre class="code-block" style="font-size: 0.64em; margin-top: var(--margin-xs);">chmod +x ~/.claude/hooks/security-check.sh</pre>
+                    </div>
+                    <div class="os-tabs__panel" data-os="linux">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/security-check.sh</code></p>
+                        <pre class="code-block" style="font-size: 0.64em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
+INPUT=$(cat)
+CMD=$(echo "$INPUT" | python3 -c \
+  "import sys,json; d=json.load(sys.stdin); \
+   print(d.get('tool_input',{}).get('command',''))")
+[ -z "$CMD" ] && exit 0
+
+for p in "rm -rf /" "DROP TABLE" "chmod 777"; do
+  if echo "$CMD" | grep -qi "$p"; then
+    echo "🚫 Bloqué : '$p'" >&2; exit 2
+  fi
+done
+exit 0</pre>
+                        <pre class="code-block" style="font-size: 0.64em; margin-top: var(--margin-xs);">chmod +x ~/.claude/hooks/security-check.sh</pre>
+                    </div>
+                    <div class="os-tabs__panel" data-os="windows">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/security-check.ps1</code></p>
+                        <pre class="code-block" style="font-size: 0.64em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">$cmd = ([Console]::In.ReadToEnd() | ConvertFrom-Json).tool_input.command
+if (-not $cmd) { exit 0 }
+
+foreach ($p in @("rm -rf /", "DROP TABLE", "chmod 777")) {
+  if ($cmd -like "*$p*") {
+    [Console]::Error.WriteLine("🚫 Bloqué : '$p'")
+    exit 2
+  }
+}
+exit 0</pre>
+                        <pre class="code-block" style="font-size: 0.64em; margin-top: var(--margin-xs); white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;"># Une fois : autoriser les scripts locaux
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</pre>
+                    </div>
+                </div>
             </div>
             <div class="card" style="flex: 1; min-width: 0; border-left: 4px solid var(--color-amber);">
-                <strong style="color: var(--color-amber);">~/.claude/settings.json</strong>
-                <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-md); line-height: 1.6; font-size: 0.72em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
+                <strong style="color: var(--color-amber);">2. <code>~/.claude/settings.json</code></strong>
+                <div class="os-tabs" data-os-tabs style="margin-top: var(--margin-sm);">
+                    <div class="os-tabs__nav" role="tablist">
+                        <button class="os-tabs__tab" data-os="mac"     type="button">macOS</button>
+                        <button class="os-tabs__tab" data-os="linux"   type="button">Linux</button>
+                        <button class="os-tabs__tab" data-os="windows" type="button">Windows</button>
+                    </div>
+                    <div class="os-tabs__panel" data-os="mac">
+                        <pre class="code-block" style="font-size: 0.66em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
   "hooks": {
     "PreToolUse": [{
       "matcher": "Bash",
@@ -232,7 +317,36 @@ exit 0</pre>
     }]
   }
 }</pre>
-                <p style="color: var(--color-charcoal); margin-top: var(--margin-md); font-size: var(--font-size-secondary);">Test : demandez à Claude d'exécuter <code>rm -rf /tmp/../</code></p>
+                    </div>
+                    <div class="os-tabs__panel" data-os="linux">
+                        <pre class="code-block" style="font-size: 0.66em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{
+        "type": "command",
+        "command": "~/.claude/hooks/security-check.sh"
+      }]
+    }]
+  }
+}</pre>
+                    </div>
+                    <div class="os-tabs__panel" data-os="windows">
+                        <pre class="code-block" style="font-size: 0.66em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{
+        "type": "command",
+        "shell": "powershell",
+        "command": "&amp; \"$HOME/.claude/hooks/security-check.ps1\""
+      }]
+    }]
+  }
+}</pre>
+                    </div>
+                </div>
+                <p style="color: var(--color-charcoal); margin-top: var(--margin-sm); font-size: var(--font-size-secondary);">Test : demandez à Claude d'exécuter <code>rm -rf /tmp/../</code></p>
             </div>
         </div>
     </section>
@@ -241,39 +355,76 @@ exit 0</pre>
     <section>
         <h2>🛠 TP 3 & 4 — Notification & Contexte (8 min)</h2>
         <div class="card card--intro" style="margin-bottom: var(--margin-md);">
-            <p style="color: var(--color-charcoal);">💡 <strong style="color: var(--color-terracotta);">Prérequis :</strong> macOS / Linux natif — Windows avec <strong>Git Bash</strong>. Windows nécessite aussi le module PowerShell <code>BurntToast</code> pour les notifications (<code>Install-Module BurntToast</code>).</p>
+            <p style="color: var(--color-charcoal);">💡 <strong style="color: var(--color-terracotta);">Prérequis :</strong> macOS / Linux : <strong>bash</strong>. Windows : <strong>PowerShell natif</strong> + module <code>BurntToast</code> pour les notifications (<code>Install-Module BurntToast</code>). Onglet de votre OS pré-sélectionné.</p>
         </div>
         <div style="display: flex; gap: var(--gap-md); align-items: start;">
             <div class="card" style="flex: 1; min-width: 0; border-left: 4px solid var(--color-green);">
-                <strong style="color: var(--color-green);">Notification native (cross-platform)</strong>
-                <p style="color: var(--color-charcoal); margin-top: var(--margin-sm);">Fonctionne même sans terminal ouvert :</p>
-                <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-md); line-height: 1.6; font-size: 0.72em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
+                <strong style="color: var(--color-green);">TP 3 — Notification de fin</strong>
+                <div class="os-tabs" data-os-tabs style="margin-top: var(--margin-sm);">
+                    <div class="os-tabs__nav" role="tablist">
+                        <button class="os-tabs__tab" data-os="mac"     type="button">macOS</button>
+                        <button class="os-tabs__tab" data-os="linux"   type="button">Linux</button>
+                        <button class="os-tabs__tab" data-os="windows" type="button">Windows</button>
+                    </div>
+                    <div class="os-tabs__panel" data-os="mac">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/notify.sh</code> + <code>chmod +x</code></p>
+                        <pre class="code-block" style="font-size: 0.66em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
 MSG="Claude a terminé !"
-case "$(uname)" in
-  Darwin) osascript -e "display notification \"$MSG\" with title \"Claude Code\"" ;;
-  Linux)  notify-send "Claude Code" "$MSG" ;;
-  *)      powershell.exe -Command "New-BurntToastNotification -Text 'Claude Code','$MSG'" ;;
-esac</pre>
-                <p style="color: var(--color-charcoal); margin-top: var(--margin-sm); font-size: var(--font-size-secondary);">Sauvegarder dans <code>~/.claude/hooks/notify.sh</code> puis <code>chmod +x</code></p>
+osascript -e "display notification \"$MSG\" with title \"Claude Code\""</pre>
+                    </div>
+                    <div class="os-tabs__panel" data-os="linux">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/notify.sh</code> + <code>chmod +x</code></p>
+                        <pre class="code-block" style="font-size: 0.66em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
+MSG="Claude a terminé !"
+notify-send "Claude Code" "$MSG"</pre>
+                    </div>
+                    <div class="os-tabs__panel" data-os="windows">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/notify.ps1</code> (module BurntToast)</p>
+                        <pre class="code-block" style="font-size: 0.66em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">New-BurntToastNotification -Text 'Claude Code', 'Claude a terminé !'</pre>
+                    </div>
+                </div>
             </div>
             <div class="card" style="flex: 1; min-width: 0; border-left: 4px solid var(--color-blue);">
-                <strong style="color: var(--color-blue);">Injection de contexte au démarrage</strong>
-                <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin-top: var(--margin-xs);">① <code>~/.claude/hooks/context.sh</code></p>
-                <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-xs); line-height: 1.5; font-size: 0.65em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
+                <strong style="color: var(--color-blue);">TP 4 — Contexte au démarrage</strong>
+                <div class="os-tabs" data-os-tabs style="margin-top: var(--margin-sm);">
+                    <div class="os-tabs__nav" role="tablist">
+                        <button class="os-tabs__tab" data-os="mac"     type="button">macOS</button>
+                        <button class="os-tabs__tab" data-os="linux"   type="button">Linux</button>
+                        <button class="os-tabs__tab" data-os="windows" type="button">Windows</button>
+                    </div>
+                    <div class="os-tabs__panel" data-os="mac">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/context.sh</code></p>
+                        <pre class="code-block" style="font-size: 0.6em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
 echo "Dossier : $(pwd)"
-case "$(uname)" in
-  Darwin|Linux) echo "Date : $(date '+%Y-%m-%d %H:%M')"; ls ;;
-  *) powershell.exe -Command "Get-Date; Get-ChildItem | Select Name" ;;
-esac</pre>
-                <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin-top: var(--margin-sm);">② <code>~/.claude/settings.json</code> — puis <code>chmod +x context.sh</code></p>
-                <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-xs); line-height: 1.5; font-size: 0.65em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">{
-  "hooks": {
-    "SessionStart": [{
-      "matcher": "",
-      "hooks": [{ "type": "command", "command": "~/.claude/hooks/context.sh" }]
-    }]
-  }
-}</pre>
+echo "Date : $(date '+%Y-%m-%d %H:%M')"
+ls</pre>
+                        <pre class="code-block" style="font-size: 0.6em; margin-top: var(--margin-xs); white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">// settings.json
+{ "hooks": { "SessionStart": [{ "matcher": "",
+  "hooks": [{ "type": "command",
+    "command": "~/.claude/hooks/context.sh" }] }] } }</pre>
+                    </div>
+                    <div class="os-tabs__panel" data-os="linux">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/context.sh</code></p>
+                        <pre class="code-block" style="font-size: 0.6em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">#!/bin/bash
+echo "Dossier : $(pwd)"
+echo "Date : $(date '+%Y-%m-%d %H:%M')"
+ls</pre>
+                        <pre class="code-block" style="font-size: 0.6em; margin-top: var(--margin-xs); white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">// settings.json
+{ "hooks": { "SessionStart": [{ "matcher": "",
+  "hooks": [{ "type": "command",
+    "command": "~/.claude/hooks/context.sh" }] }] } }</pre>
+                    </div>
+                    <div class="os-tabs__panel" data-os="windows">
+                        <p style="color: var(--color-stone); font-size: var(--font-size-secondary); margin: 0 0 var(--margin-xs) 0;"><code>~/.claude/hooks/context.ps1</code></p>
+                        <pre class="code-block" style="font-size: 0.6em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">Write-Output "Dossier : $(Get-Location)"
+Write-Output "Date : $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+Get-ChildItem | Select-Object Name</pre>
+                        <pre class="code-block" style="font-size: 0.6em; margin-top: var(--margin-xs); white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">// settings.json
+{ "hooks": { "SessionStart": [{ "matcher": "",
+  "hooks": [{ "type": "command", "shell": "powershell",
+    "command": "&amp; \"$HOME/.claude/hooks/context.ps1\"" }] }] } }</pre>
+                    </div>
+                </div>
                 <span class="tag" style="background: var(--color-sand); color: var(--color-charcoal); margin-top: var(--margin-sm); display: inline-block;">💡 /hooks pour inspecter</span>
             </div>
         </div>

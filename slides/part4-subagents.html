@@ -10,47 +10,74 @@
     <!-- Slide : Qu'est-ce qu'un Subagent ? -->
     <section>
         <h2>Qu'est-ce qu'un Subagent ?</h2>
-        <div class="card" style="margin-bottom: var(--margin-xxl); border-left: 4px solid var(--color-terracotta);">
-            <p style="color: var(--color-charcoal);">Un subagent est un <strong style="color: var(--color-terracotta);">agent Claude séparé</strong> que votre agent principal peut spawner pour déléguer une tâche. Il a son propre contexte, ses propres permissions et son propre modèle.</p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-sm) var(--gap-lg); margin-top: var(--margin-md); padding-top: var(--margin-md); border-top: 1px solid var(--color-sand);">
-                <div>
-                    <span class="tag tag--outline" style="--tag-color: var(--color-green);">Skill</span>
-                    <p style="color: var(--color-charcoal); font-size: var(--font-size-secondary); margin-top: var(--margin-xs);">Instructions chargées <strong>dans le contexte</strong> de l'agent courant — même processus, même modèle</p>
-                </div>
-                <div>
-                    <span class="tag tag--outline" style="--tag-color: var(--color-terracotta);">Subagent</span>
-                    <p style="color: var(--color-charcoal); font-size: var(--font-size-secondary); margin-top: var(--margin-xs);">Processus <strong>entièrement séparé</strong> — contexte isolé, modèle et permissions propres</p>
-                </div>
-            </div>
+        <div class="card" style="margin-bottom: var(--margin-lg); border-left: 4px solid var(--color-terracotta);">
+            <p style="color: var(--color-charcoal);">Un subagent est un <strong style="color: var(--color-terracotta);">agent Claude séparé</strong> que votre agent principal peut invoquer pour déléguer une tâche — son propre contexte, ses propres permissions et son propre modèle.</p>
         </div>
-        <div style="display: flex; gap: var(--gap-xl); margin-top: var(--margin-lg);">
-            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-blue);">
-                <div style="text-align: center; margin-bottom: var(--margin-xl);">
-                    <span style="font-size: var(--font-size-icon-lg);">📋</span>
-                    <p style="font-weight: 700; margin-top: var(--margin-md); color: var(--color-blue);">Contexte propre</p>
+
+        <!-- Skill ≠ Subagent : tableau comparatif (zébré, sans bordures, corps charcoal) -->
+        <div style="margin-bottom: var(--margin-lg); border-radius: 0.75em; overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse; font-size: var(--font-size-secondary); color: var(--color-charcoal);">
+                <thead>
+                    <tr>
+                        <th style="text-align: center; padding: var(--padding-sm) var(--padding-md); width: 9.5em;"><span style="font-size: 1.3em; font-weight: 800; color: var(--color-stone);">≠</span></th>
+                        <th style="text-align: left; padding: var(--padding-sm) var(--padding-md);"><span class="tag tag--outline" style="--tag-color: var(--color-green); margin: 0;">Skill</span></th>
+                        <th style="text-align: left; padding: var(--padding-sm) var(--padding-md);"><span class="tag tag--outline" style="--tag-color: var(--color-terracotta); margin: 0;">Subagent</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: var(--color-cream-card);">
+                        <td style="padding: var(--padding-sm) var(--padding-md); font-weight: 700; color: var(--color-charcoal);">Processus</td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);"><strong style="color: var(--color-charcoal);">Même</strong> processus</td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);">Entièrement <strong style="color: var(--color-charcoal);">séparé</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--padding-sm) var(--padding-md); font-weight: 700; color: var(--color-charcoal);">Contexte</td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);">Celui de l'agent <strong style="color: var(--color-charcoal);">courant</strong></td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);"><strong style="color: var(--color-charcoal);">Isolé</strong>, propre</td>
+                    </tr>
+                    <tr style="background: var(--color-cream-card);">
+                        <td style="padding: var(--padding-sm) var(--padding-md); font-weight: 700; color: var(--color-charcoal);">Modèle</td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);"><strong style="color: var(--color-charcoal);">Même</strong> modèle</td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);"><strong style="color: var(--color-charcoal);">Propre</strong></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--padding-sm) var(--padding-md); font-weight: 700; color: var(--color-charcoal);">Permissions</td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);">Celles de l'agent</td>
+                        <td style="padding: var(--padding-sm) var(--padding-md); color: var(--color-charcoal);"><strong style="color: var(--color-charcoal);">Propres</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pourquoi déléguer : les 4 atouts -->
+        <div style="display: flex; gap: var(--gap-md);">
+            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-blue); gap: var(--gap-sm);">
+                <div style="text-align: center;">
+                    <span style="font-size: var(--font-size-icon-md);">📋</span>
+                    <p style="font-weight: 700; margin-top: var(--margin-xs); color: var(--color-blue);">Contexte propre</p>
                 </div>
-                <p style="color: var(--color-charcoal);">Window séparée — il explore 50 fichiers, le parent reçoit un <strong style="color: var(--color-blue);">résumé propre</strong></p>
+                <p style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">Window séparée — il explore 50 fichiers, le parent reçoit un <strong style="color: var(--color-blue);">résumé propre</strong></p>
             </div>
-            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-green);">
-                <div style="text-align: center; margin-bottom: var(--margin-xl);">
-                    <span style="font-size: var(--font-size-icon-lg);">⚡</span>
-                    <p style="font-weight: 700; margin-top: var(--margin-md); color: var(--color-green);">Parallélisation</p>
+            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-green); gap: var(--gap-sm);">
+                <div style="text-align: center;">
+                    <span style="font-size: var(--font-size-icon-md);">⚡</span>
+                    <p style="font-weight: 700; margin-top: var(--margin-xs); color: var(--color-green);">Parallélisation</p>
                 </div>
-                <p style="color: var(--color-charcoal);">3 subagents travaillent en <strong style="color: var(--color-green);">simultané</strong></p>
+                <p style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">3 subagents travaillent en <strong style="color: var(--color-green);">simultané</strong></p>
             </div>
-            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-amber);">
-                <div style="text-align: center; margin-bottom: var(--margin-xl);">
-                    <span style="font-size: var(--font-size-icon-lg);">🛡️</span>
-                    <p style="font-weight: 700; margin-top: var(--margin-md); color: var(--color-amber);">Permissions différenciées</p>
+            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-amber); gap: var(--gap-sm);">
+                <div style="text-align: center;">
+                    <span style="font-size: var(--font-size-icon-md);">🛡️</span>
+                    <p style="font-weight: 700; margin-top: var(--margin-xs); color: var(--color-amber);">Permissions différenciées</p>
                 </div>
-                <p style="color: var(--color-charcoal);">Lecture seule pour explorer, écriture pour <strong style="color: var(--color-amber);">implémenter</strong></p>
+                <p style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">Lecture seule pour explorer, écriture pour <strong style="color: var(--color-amber);">implémenter</strong></p>
             </div>
-            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-terracotta);">
-                <div style="text-align: center; margin-bottom: var(--margin-xl);">
-                    <span style="font-size: var(--font-size-icon-lg);">💰</span>
-                    <p style="font-weight: 700; margin-top: var(--margin-md); color: var(--color-terracotta);">Optimisation coûts</p>
+            <div class="card flex-col" style="flex: 1; border-top: 4px solid var(--color-terracotta); gap: var(--gap-sm);">
+                <div style="text-align: center;">
+                    <span style="font-size: var(--font-size-icon-md);">💰</span>
+                    <p style="font-weight: 700; margin-top: var(--margin-xs); color: var(--color-terracotta);">Optimisation coûts</p>
                 </div>
-                <p style="color: var(--color-charcoal);">Routez les tâches simples vers <strong style="color: var(--color-terracotta);">Haiku</strong>, gardez Sonnet pour le cœur</p>
+                <p style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">Maîtrisez les coûts en <strong style="color: var(--color-terracotta);">déclarant un modèle</strong> adapté à chaque tâche</p>
             </div>
         </div>
     </section>
@@ -60,43 +87,124 @@
         <h2>Built-in vs Custom</h2>
         <div class="grid-2" style="align-items: start;">
             <div class="card" style="border-left: 4px solid var(--color-blue);">
-                <strong style="color: var(--color-blue);">Built-in (fournis par Anthropic)</strong>
-                <p style="color: var(--color-charcoal); margin-top: var(--margin-sm);">Automatiquement invoqués selon le contexte :</p>
-                <div style="display: grid; grid-template-columns: 9em 1fr; gap: var(--gap-xs) var(--gap-md); align-items: center; margin-top: var(--margin-md);">
+                <strong style="color: var(--color-blue);">Built-in — fournis par Anthropic</strong>
+                <p style="color: var(--color-charcoal); margin-top: var(--margin-sm); font-size: var(--font-size-secondary);">Zéro config, invoqués automatiquement selon le contexte :</p>
+                <div style="display: grid; grid-template-columns: 10em 1fr; gap: var(--gap-sm) var(--gap-md); align-items: center; margin-top: var(--margin-md);">
                     <span class="tag tag--outline" style="--tag-color: var(--color-blue); justify-self: start;">Explore</span>
-                    <span style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">Exploration read-only rapide (Haiku)</span>
-
+                    <span style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">Exploration read-only rapide</span>
                     <span class="tag tag--outline" style="--tag-color: var(--color-blue); justify-self: start;">Plan</span>
                     <span style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">Recherche avant planification</span>
-
                     <span class="tag tag--outline" style="--tag-color: var(--color-blue); justify-self: start;">General-purpose</span>
                     <span style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">Tâches multi-étapes complexes</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 9em 1fr; gap: var(--gap-xs) var(--gap-md); align-items: center; margin-top: var(--margin-lg); padding-top: var(--margin-md); border-top: 1px solid var(--color-sand);">
+            </div>
+            <div class="card" style="border-left: 4px solid var(--color-terracotta);">
+                <strong style="color: var(--color-terracotta);">Custom — définis par vous</strong>
+                <p style="color: var(--color-charcoal); margin-top: var(--margin-sm); font-size: var(--font-size-secondary);">Un fichier Markdown (frontmatter YAML + prompt système) déposé dans :</p>
+                <div style="display: grid; grid-template-columns: 6.5em 1fr; gap: var(--gap-sm) var(--gap-md); align-items: center; margin-top: var(--margin-md);">
                     <span class="tag tag--outline" style="--tag-color: var(--color-green); justify-self: start;">PROJET</span>
                     <code style="font-size: var(--font-size-secondary);">.claude/agents/</code>
                     <span class="tag tag--outline" style="--tag-color: var(--color-blue); justify-self: start;">USER</span>
                     <code style="font-size: var(--font-size-secondary);">~/.claude/agents/</code>
                 </div>
+                <div class="card card--intro" style="margin-top: var(--margin-md); margin-bottom: 0;">
+                    <p style="color: var(--color-charcoal); font-size: var(--font-size-secondary);">→ Tous les champs disponibles : <strong style="color: var(--color-terracotta);">slide suivante</strong> ↓</p>
+                </div>
             </div>
-            <div class="card" style="border-left: 4px solid var(--color-terracotta);">
-                <strong style="color: var(--color-terracotta);">Anatomie d'un fichier custom</strong>
-                <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-md); line-height: 1.6; font-size: 0.72em; white-space: pre-wrap; word-wrap: break-word; overflow-x: hidden;">---
-name: security-reviewer
-description: Expert sécurité. Analyser
-  les changements avant tout commit
-  touchant l'auth ou les paiements.
-tools: Read, Grep, Glob
-model: sonnet
----
+        </div>
+    </section>
 
-Vous êtes un expert en sécurité...
-
-## Votre mission
-- Injections SQL, XSS, command injection
-- Données sensibles exposées
-- CVE dans les dépendances</pre>
-            </div>
+    <!-- Slide : Subagent custom — les champs disponibles -->
+    <section>
+        <h2>Subagent custom — les champs</h2>
+        <p class="text-muted" style="margin: 0 0 var(--margin-sm) 0;">Frontmatter YAML d'un fichier <code>.claude/agents/mon-agent.md</code> — seuls <code>name</code> et <code>description</code> sont obligatoires, tout le reste est optionnel.</p>
+        <div style="border-radius: 0.6em; overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.95em; color: var(--color-charcoal);">
+                <thead>
+                    <tr>
+                        <th style="background: var(--color-terracotta); border-right: 2px solid var(--color-cream); text-align: left; padding: var(--padding-sm) var(--padding-md); font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-charcoal); font-weight: 700; width: 12.5em;">Catégorie</th>
+                        <th style="background: var(--color-blue); border-right: 2px solid var(--color-cream); text-align: left; padding: var(--padding-sm) var(--padding-md); font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-charcoal); font-weight: 700; width: 11.5em;">Champ</th>
+                        <th style="background: var(--color-green); text-align: left; padding: var(--padding-sm) var(--padding-md); font-size: 0.78em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-charcoal); font-weight: 700;">Rôle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Obligatoire</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>name</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">identifiant unique (minuscules-tirets)</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top;"></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>description</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">champ déclencheur : quand déléguer</td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Outils &amp; permissions</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>tools</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">liste blanche (sinon hérite de tout)</td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top;"></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>disallowedTools</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">liste noire retirée du pool</td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top;"></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>permissionMode</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">default · acceptEdits · plan · bypassPermissions…</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Modèle &amp; budget</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>model</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">sonnet · opus · haiku · fable · inherit</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top;"></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>effort</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">low · medium · high · xhigh · max</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top;"></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>maxTurns</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">plafond de tours agentiques</td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Connaissances</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>skills</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">contenu intégral injecté au démarrage</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Outils externes</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>mcpServers</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">serveurs MCP propres à l'agent</td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Mémoire</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>memory</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">persiste entre sessions : user · project · local</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Exécution &amp; isolation</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>background</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">toujours en tâche de fond</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top;"></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>isolation</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);"><code>worktree</code> : clone git isolé</td>
+                    </tr>
+                    <tr style="background: var(--color-sand);">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top;"></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>color</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">couleur d'affichage de l'agent</td>
+                    </tr>
+                    <tr style="background: transparent;">
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-charcoal);">Hooks</td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; white-space: nowrap;"><code>hooks</code></td>
+                        <td style="padding: var(--padding-xs) var(--padding-md); vertical-align: top; color: var(--color-charcoal);">déclenchés sur le cycle de vie</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 
@@ -108,7 +216,7 @@ Vous êtes un expert en sécurité...
                 <div style="font-size: var(--font-size-icon-md); min-width: 40px; text-align: center;">🤖</div>
                 <div style="flex: 1; min-width: 0;">
                     <strong style="color: var(--color-blue);">Invocation automatique</strong>
-                    <p style="color: var(--color-charcoal); margin-top: var(--margin-xs);">Claude décide selon la description de la skill</p>
+                    <p style="color: var(--color-charcoal); margin-top: var(--margin-xs);">Claude décide selon la description du skill</p>
                     <pre style="background: var(--color-charcoal); color: var(--color-cream); padding: var(--padding-sm); border-radius: 8px; margin-top: var(--margin-sm); line-height: 1.7; white-space: pre-wrap; word-wrap: break-word;">Vérifie la sécurité de ce changement avant de commiter</pre>
                 </div>
             </div>

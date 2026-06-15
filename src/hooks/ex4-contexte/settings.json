@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"=== Contexte projet ===\"; echo \"Branche git : $(git branch --show-current 2>/dev/null || echo 'non-git')\"; echo \"Derniers commits :\"; git log --oneline -5 2>/dev/null || echo 'N/A'; echo \"Variables d'env chargées : $(env | grep -c APP_ 2>/dev/null || echo 0)\""
+          }
+        ]
+      }
+    ]
+  }
+}

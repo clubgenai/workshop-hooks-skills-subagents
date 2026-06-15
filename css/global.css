@@ -82,7 +82,6 @@
   --r-code-font:                var(--font-code);
   --r-link-color:               var(--color-terracotta);
   --r-link-color-hover:         var(--color-terracotta-dark);
-  --r-link-color-visited:       var(--color-terracotta-dark);
   --r-selection-background-color: var(--color-sand);
   --r-selection-color:          var(--color-charcoal);
 }
@@ -137,15 +136,6 @@ body, .reveal {
   font-size: var(--font-size-subtitle);
 }
 
-/* ── Links ───────────────────────────────────────── */
-.reveal a:link{
-  color:     var(--r-link-color);
-}
-
-.reveal a:visited{
-  color:     var(--r-link-color-visited);
-}
-
 /* ── Controls & progress ─────────────────────────── */
 .reveal .progress {
   color: var(--color-terracotta);
@@ -193,5 +183,12 @@ body {
 
 /* Hebergeur slide — vertical centering */
 .reveal section.slide-hebergeur {
-  padding-top: 120px;
+  padding-top: 0;
+}
+
+.hebergeur-inner {
+  min-height: 580px;
+  display:        flex;
+  flex-direction: column;
+  justify-content: center;
 }
