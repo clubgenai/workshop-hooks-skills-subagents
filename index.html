@@ -1,101 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Club GenΛI – Hooks, Skills &amp; Subagents</title>
 
-  <title>Club GenΛI – Hooks, Skills et Subagents</title>
-
-  <!-- Reveal.js Styles -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reset.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.min.css">
-
-  <!-- Google Fonts: Inter -->
+  <!-- Fonts (Anthropic-style: Space Grotesk + Source Sans 3 + JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Design System — variables globales + composants -->
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/components.css">
+  <!-- Reveal.js core + highlight theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/monokai.css">
 
-  <!-- Typography overrides — px values bypass Reveal.js runtime font-size injection -->
-  <style>
-    .reveal .slides { font-size: 16px !important; }
-    .reveal h1 { font-size: 50px !important; }
-    .reveal h2 { font-size: 36px !important; }
-    .reveal h3 { font-size: 32px !important; }
-    .reveal h4 { font-size: 23px !important; }
-
-    /* Copy button on <pre> blocks */
-    .pre-wrapper { position: relative; }
-    .copy-btn {
-      position: absolute;
-      top: 0.4em;
-      right: 0.4em;
-      background: rgba(255,255,255,0.12);
-      color: #ccc;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 5px;
-      padding: 0.2em 0.55em;
-      font-size: 0.7em;
-      font-family: inherit;
-      cursor: pointer;
-      line-height: 1.6;
-      transition: background 0.15s, color 0.15s;
-      z-index: 10;
-    }
-    .copy-btn:hover { background: rgba(255,255,255,0.22); color: #fff; }
-    .copy-btn.copied { background: #8aad8a; color: #fff; border-color: #8aad8a; }
-  </style>
+  <!-- Deck design system (extracted from the Claude Design handoff) -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-  <div class="reveal">
-    <div class="slides">
-      <!-- Slides injected by js/main.js -->
-    </div>
-
+  <div class="reveal" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;">
+    <!-- Parts are fetched and injected by js/main.js, one file per partie -->
+    <div class="slides"></div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.0.4/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/plugin/highlight/highlight.js"></script>
   <script src="js/main.js"></script>
-  <script src="components/os-tabs/os-tabs.js"></script>
-  <script>
-    // Inject copy button on every <pre> — runs after Reveal loads slides via fetch()
-    function addCopyButtons() {
-      document.querySelectorAll('.reveal pre:not(.pre-wrapper > pre)').forEach(pre => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'pre-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        wrapper.appendChild(pre);
-
-        const btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'copier';
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          navigator.clipboard.writeText(pre.innerText).then(() => {
-            btn.textContent = '✓ copié';
-            btn.classList.add('copied');
-            setTimeout(() => { btn.textContent = 'copier'; btn.classList.remove('copied'); }, 1800);
-          });
-        });
-        wrapper.appendChild(btn);
-      });
-    }
-    // Reveal.js fires 'ready' after all slides are injected
-    window.addEventListener('message', e => { if (e.data === 'reveal-ready') addCopyButtons(); });
-    document.addEventListener('DOMContentLoaded', () => {
-      // Fallback: poll until Reveal exists and slides are populated
-      const wait = setInterval(() => {
-        if (typeof Reveal !== 'undefined' && document.querySelector('.reveal pre')) {
-          clearInterval(wait);
-          addCopyButtons();
-        }
-      }, 100);
-    });
-  </script>
 </body>
 </html>
