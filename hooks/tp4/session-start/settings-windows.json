@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "& \"$HOME/.claude/hooks/context-windows.ps1\""
+          }
+        ]
+      }
+    ]
+  }
+}

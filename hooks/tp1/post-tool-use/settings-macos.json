@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(python3 -c \"import sys,json; print(json.load(sys.stdin).get('tool_input',{}).get('file_path',''))\"); case \"$FILE\" in *.js|*.ts|*.jsx|*.tsx) npx --yes prettier --write \"$FILE\" 2>/dev/null;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}

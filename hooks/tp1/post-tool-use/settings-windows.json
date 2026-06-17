@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "$f=([Console]::In.ReadToEnd()|ConvertFrom-Json).tool_input.file_path; if($f -match '\\.(jsx?|tsx?)$'){npx --yes prettier --write $f 2>$null}"
+          }
+        ]
+      }
+    ]
+  }
+}
