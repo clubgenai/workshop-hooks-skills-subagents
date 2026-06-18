@@ -7,7 +7,7 @@
           {
             "type": "command",
             "shell": "powershell",
-            "command": "& \"$HOME/.claude/hooks/notify-windows.ps1\""
+            "command": "& \".claude/hooks/notify.ps1\""
           }
         ]
       }

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/security-check-macos.sh"
+            "command": ".claude/hooks/security-check-macos.sh"
           }
         ]
       }

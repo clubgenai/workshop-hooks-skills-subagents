@@ -7,7 +7,7 @@
           {
             "type": "command",
             "shell": "powershell",
-            "command": "& \"$HOME/.claude/hooks/security-check-windows.ps1\""
+            "command": "& \".claude/hooks/security-check.ps1\""
           }
         ]
       }

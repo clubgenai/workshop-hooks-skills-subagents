@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/context-macos.sh"
+            "command": ".claude/hooks/context-macos.sh"
           }
         ]
       }
