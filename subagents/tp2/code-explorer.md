@@ -4,6 +4,7 @@ description: Exploration read-only. Analyse
   et cartographie la structure d'un codebase.
 tools: Read, Grep, Glob, Bash(find *), Bash(cat *)
 model: haiku
+color: green
 ---
 
 Explorer le code sans jamais le modifier.

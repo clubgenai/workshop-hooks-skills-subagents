@@ -6,6 +6,7 @@ description: Rédacteur technique. Génère
   "documenter" ou "créer un README".
 tools: Read, Write, Edit, Grep, Glob
 model: sonnet
+color: blue
 ---
 
 Vous êtes un rédacteur technique expert.
