@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "FILE=$(python3 -c \"import sys,json; print(json.load(sys.stdin).get('tool_input',{}).get('file_path',''))\"); case \"$FILE\" in *.js|*.ts|*.jsx|*.tsx) npx --yes prettier --write \"$FILE\" >/dev/null 2>&1 && printf '{\"systemMessage\":\"✅ Hook prettier : %s formaté avec succès\"}' \"$FILE\";; esac"
+            "command": "FILE=$(python3 -c \"import sys,json; print(json.load(sys.stdin).get('tool_input',{}).get('file_path',''))\"); case \"$FILE\" in *.py) ruff format \"$FILE\" >/dev/null 2>&1 && printf '{\"systemMessage\":\"✅ Hook ruff : %s formaté avec succès\"}' \"$FILE\";; esac"
           }
         ]
       }

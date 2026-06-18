@@ -7,7 +7,7 @@
           {
             "type": "command",
             "shell": "powershell",
-            "command": "$f=([Console]::In.ReadToEnd()|ConvertFrom-Json).tool_input.file_path; if($f -match '\\.(jsx?|tsx?)$'){npx --yes prettier --write $f *>$null; Write-Output ('{\"systemMessage\":\"✅ Hook prettier : ' + $f + ' formaté avec succès\"}')}"
+            "command": "$f=([Console]::In.ReadToEnd()|ConvertFrom-Json).tool_input.file_path; if($f -match '\\.py$'){ruff format $f *>$null; Write-Output ('{\"systemMessage\":\"✅ Hook ruff : ' + $f + ' formaté avec succès\"}')}"
           }
         ]
       }
