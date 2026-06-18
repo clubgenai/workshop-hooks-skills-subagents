@@ -1,8 +1,9 @@
 ---
 name: commit-message
-description: Génère des messages de commit
-  Conventional Commits. Utiliser quand
-  l'utilisateur veut "commiter".
+description: Génère un message de commit au format Conventional Commits
+  à partir du diff stagé. À utiliser dès que l'utilisateur demande de committer,
+  commiter, faire un commit, créer un commit, ou rédiger/écrire un message de commit
+  (ex. "commit ça", "fais un commit", "git commit", "commite ces changements").
 ---
 
 ## Processus
